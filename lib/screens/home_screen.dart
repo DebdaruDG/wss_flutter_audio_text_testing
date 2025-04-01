@@ -16,12 +16,30 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           ElevatedButton(
-            onPressed: websocket.isConnected
+            onPressed: websocket.status == WebSocketStatus.connected
                 ? websocket.disconnect
                 : websocket.connect,
-            child: Text(websocket.isConnected ? "Disconnect" : "Connect"),
+            child: websocket.status == WebSocketStatus.connecting
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Text(websocket.status == WebSocketStatus.connected
+                    ? "Disconnect"
+                    : "Connect"),
           ),
-          if (websocket.isConnected) const InteractionScreen(),
+          if (websocket.status == WebSocketStatus.failed)
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(websocket.errorMessage,
+                  style: const TextStyle(color: Colors.red)),
+            ),
+          if (websocket.status == WebSocketStatus.connected)
+            const InteractionScreen(),
         ],
       ),
     );
