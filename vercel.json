@@ -1,7 +1,4 @@
 {
-  "builds": [
-    { "src": "build/web/**/*", "use": "@vercel/static" }
-  ],
   "routes": [
     { "src": "/(manifest.json|favicon.png|version.json|assets/.*|icons/.*|canvaskit/.*)", "dest": "/$1" },
     { "src": "/.*", "dest": "/index.html" }
